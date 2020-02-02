@@ -12,7 +12,7 @@ void CluStream::offline_cluster(Point& datapoint,long timestamp){
 	// 1. Determine closest kernel
 	Kernel* closest_kernel = NULL;
 	double min_distance = double_max;
-	for ( int i = 0; i < kernels.size(); i++ ) {
+	for ( int i = 0; i < kernels.size(); i++ ) { //O(n)
 		double dist = distance(datapoint, kernels[i].center);
 		if ( dist < min_distance ) {
 			closest_kernel = &kernels[i];
@@ -26,7 +26,7 @@ void CluStream::offline_cluster(Point& datapoint,long timestamp){
 			// next closest cluster
 			radius = double_max;
 			Point center = closest_kernel->center;
-			for ( int i = 0; i < kernels.size(); i++ ) {
+			for ( int i = 0; i < kernels.size(); i++ ) { //O(n)
 				if ( &kernels[i] == closest_kernel ) {
 					continue;
 				}
@@ -40,7 +40,7 @@ void CluStream::offline_cluster(Point& datapoint,long timestamp){
 
 		if ( min_distance < radius ) {
 			// Date fits, put into kernel and be happy
-			printf("%ld fits",timestamp);
+			printf("%ld fits\n",timestamp);
 			closest_kernel->insert( datapoint, timestamp );
 			return;
 		}
@@ -53,7 +53,7 @@ void CluStream::offline_cluster(Point& datapoint,long timestamp){
 		for ( int i = 0; i < kernels.size(); i++ ) {
 			if ( kernels[i].get_relevance_stamp() < threshold ) {
 				kernels[i] = Kernel( datapoint, timestamp, t, m );
-				printf("%ld forgot kernel",timestamp);
+				printf("%ld forgot kernel\n",timestamp);
 				return;
 			}
 		}
@@ -61,7 +61,7 @@ void CluStream::offline_cluster(Point& datapoint,long timestamp){
 		int closest_a = 0;
 		int closest_b = 0;
 		min_distance = double_max;
-		for ( int i = 0; i < kernels.size(); i++ ) {
+		for ( int i = 0; i < kernels.size(); i++ ) { //O(n(n+1)/2)
 			Point center_a = kernels[i].center;
 			for ( int j = i + 1; j < kernels.size(); j++ ) {
 				double dist = distance( center_a, kernels[j].center );
@@ -72,7 +72,7 @@ void CluStream::offline_cluster(Point& datapoint,long timestamp){
 				}
 			}
 		}
-		printf("%ld merged kernel",timestamp);
+		printf("%ld merged kernel\n",timestamp);
 		kernels[closest_a].add( kernels[closest_b] );
 		kernels[closest_b] = Kernel( datapoint, timestamp, t,  m );
 }
