@@ -46,7 +46,7 @@ int main(int argc, char const *argv[]){
 	long timestamp=0;
 	Matrix batch;
 	CluStream model(
-		2000, //h
+		1000, //h
 		2000, //m
 		2   //t
 	);
@@ -56,12 +56,13 @@ int main(int argc, char const *argv[]){
 		for(Point datapoint : batch){
 			timer(1);
 			model.offline_cluster(datapoint,timestamp);
-			pps_avg+= 1/(timer(0)/1e+9);
+			if (timestamp>model.m)
+				pps_avg+= 1/(timer(0)/1e+9);
 			timestamp++;
 		}
-		if(timestamp==40000)break;
+		if(timestamp==4000)break;
 	}
-	pps_avg/=timestamp;
+	pps_avg/=(timestamp-model.m);
 	printf("avg pps :%ld\n",pps_avg);
 	fclose(f);
 }
