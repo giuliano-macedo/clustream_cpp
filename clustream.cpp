@@ -6,8 +6,10 @@ CluStream::CluStream(int h,int m,int t){
 	this->t=t;
 }
 void CluStream::offline_cluster(Point& datapoint,long timestamp){
+	// 0. Initialize
 	if(kernels.size()!=m){
 		kernels.push_back(Kernel(datapoint,timestamp,t,m));
+		return;
 	}
 	// 1. Determine closest kernel
 	Kernel* closest_kernel = NULL;
