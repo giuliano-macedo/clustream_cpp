@@ -1,5 +1,4 @@
-#ifndef CLUSTREAM
-#define CLUSTREAM
+#pragma once
 
 #include "kernel.hpp"
 #include <vector>
@@ -22,5 +21,3 @@ public:
 	CluStream(int h,int m,int t);
 	void offline_cluster(Point& datapoint,long timestamp);
 };
-
-#endif

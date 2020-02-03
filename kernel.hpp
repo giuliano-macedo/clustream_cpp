@@ -1,5 +1,4 @@
-#ifndef KERNEL
-#define KERNEL
+#pragma once
 
 #include <vector>
 #include <cmath>
@@ -39,5 +38,3 @@ public:
 	double calc_normalized_distance(Point& datapoint);
 	double inverse_error(double x);
 };
-
-#endif
